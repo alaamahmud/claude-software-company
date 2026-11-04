@@ -1,0 +1,17 @@
+{
+  "project": "",
+  "stage": "idle",
+  "stages": ["planning", "analysis", "design", "development", "qa", "security", "docs", "release", "deploy"],
+  "gates": {
+    "requirements": "pending",
+    "design": "pending",
+    "production": "pending"
+  },
+  "awaiting_approval": null,
+  "fix_cycle": 0,
+  "progress": {
+    "executive": 0, "analysis": 0, "design": 0, "development": 0, "qa": 0,
+    "security": 0, "devops": 0, "docs": 0, "hr": 0
+  },
+  "updated_at": null
+}

@@ -1,0 +1,16 @@
+{
+  "agent": "ceo",
+  "env": {
+    "CLAUDE_CODE_MAX_SUBAGENT_SPAWN_DEPTH": "2",
+    "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "0"
+  },
+  "permissions": {
+    "deny": ["Read(./.env)", "Read(./.env.*)"]
+  },
+  "hooks": {
+    "SubagentStart":     [{ "hooks": [{ "type": "http", "url": "http://localhost:8000/office/events/", "timeout": 2 }] }],
+    "SubagentStop":      [{ "hooks": [{ "type": "http", "url": "http://localhost:8000/office/events/", "timeout": 2 }] }],
+    "PreToolUse":        [{ "hooks": [{ "type": "http", "url": "http://localhost:8000/office/events/", "timeout": 2 }] }],
+    "PermissionRequest": [{ "hooks": [{ "type": "http", "url": "http://localhost:8000/office/events/", "timeout": 2 }] }]
+  }
+}

@@ -1,0 +1,11 @@
+.env
+.env.*
+__pycache__/
+*.pyc
+.venv/
+venv/
+node_modules/
+live-office/frontend/dist/
+.claude/settings.local.json
+.claude/agent-memory/*
+!.claude/agent-memory/.gitkeep
