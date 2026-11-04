@@ -1,0 +1,764 @@
+<title>المكتب الحي</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Kufi+Arabic:wght@500;600;700&family=Readex+Pro:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: an architect's section drawing of the company at dusk — the building cut open on the right,
+   the control column (decisions, missions, attendance, log) on the left; stage track spans the top. */
+:root {
+  --night: #0c1220;
+  --night-2: #121a2c;
+  --panel: #151d31;
+  --panel-2: #1b2540;
+  --line: #27324d;
+  --ink: #ece6da;
+  --ink-2: #b9b6ae;
+  --muted: #7f879b;
+  --brass: #d6a24a;
+  --brass-soft: #d6a24a33;
+  --lamp: #ffdca0;
+  --concrete: #2a3147;
+  --hatch: #3a4360;
+  --room-off: #161d2f;
+  --ok: #4cc38a;
+  --wait: #f0a53a;
+  --crit: #e5645b;
+  --d-executive: #d77aa0;
+  --d-analysis: #6c9cf0;
+  --d-design: #a27be6;
+  --d-development: #4fbf8f;
+  --d-qa: #e2bd4a;
+  --d-security: #e06a64;
+  --d-devops: #ec8f4e;
+  --d-docs: #4fc1cf;
+  --d-hr: #d77aa0;
+  --f-display: "Noto Kufi Arabic", "Readex Pro", "Segoe UI", Tahoma, sans-serif;
+  --f-body: "Readex Pro", "Segoe UI", Tahoma, "Noto Sans Arabic", sans-serif;
+  --f-mono: "IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+html { background: var(--night); }
+body {
+  background: var(--night);
+  color: var(--ink);
+  font-family: var(--f-body);
+  font-size: 14px;
+  line-height: 1.6;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 20px 32px;
+}
+.wrap { max-width: 1480px; margin: 0 auto; display: flex; flex-direction: column; gap: 16px; }
+
+/* Header */
+.top { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 12px 24px; }
+.brand { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.brand h1 { font-family: var(--f-display); font-weight: 700; font-size: 30px; line-height: 1.1; margin: 0; letter-spacing: 0; text-wrap: balance; }
+.brand .sub { color: var(--muted); font-size: 13px; display: flex; flex-wrap: wrap; gap: 4px 14px; }
+.brand .sub b { color: var(--ink-2); font-weight: 500; }
+.mode { display: inline-flex; background: var(--panel); border: 1px solid var(--line); border-radius: 999px; padding: 3px; }
+.mode button {
+  font: inherit; font-size: 13px; color: var(--ink-2); background: transparent; border: 0; border-radius: 999px;
+  padding: 6px 14px; cursor: pointer; display: inline-flex; align-items: center; gap: 8px;
+}
+.mode button[aria-pressed="true"] { background: var(--panel-2); color: var(--ink); box-shadow: inset 0 0 0 1px var(--line); }
+.mode button:disabled { opacity: .45; cursor: not-allowed; }
+.mode button:focus-visible, .person:focus-visible { outline: 2px solid var(--brass); outline-offset: 2px; }
+.pulse { width: 8px; height: 8px; border-radius: 50%; background: var(--muted); }
+.pulse.live { background: var(--ok); box-shadow: 0 0 0 0 var(--ok); animation: ping 2s infinite; }
+@keyframes ping { 0% { box-shadow: 0 0 0 0 #4cc38a88; } 70% { box-shadow: 0 0 0 8px #4cc38a00; } 100% { box-shadow: 0 0 0 0 #4cc38a00; } }
+
+/* Stage track */
+.track { background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 14px 16px; overflow-x: auto; }
+.track ol { list-style: none; margin: 0; padding: 0; display: flex; align-items: center; gap: 0; min-width: 760px; }
+.track li { display: flex; align-items: center; flex: 1 1 auto; gap: 0; }
+.stg { display: flex; flex-direction: column; align-items: center; gap: 6px; min-width: 64px; }
+.stg .dot { width: 14px; height: 14px; border-radius: 50%; border: 2px solid var(--line); background: var(--night-2); }
+.stg span { font-size: 12px; color: var(--muted); white-space: nowrap; }
+.stg.past .dot { background: var(--brass); border-color: var(--brass); }
+.stg.past span { color: var(--ink-2); }
+.stg.now .dot { background: var(--night); border-color: var(--brass); box-shadow: 0 0 0 4px var(--brass-soft); }
+.stg.now span { color: var(--ink); font-weight: 600; }
+.seg { flex: 1 1 24px; height: 2px; background: var(--line); margin-top: -20px; min-width: 14px; }
+.seg.past { background: var(--brass); }
+.gate { display: flex; flex-direction: column; align-items: center; gap: 6px; min-width: 70px; }
+.gate .dia { width: 16px; height: 16px; transform: rotate(45deg); border: 2px solid var(--crit); background: var(--night-2); display: grid; place-items: center; }
+.gate .dia::after { content: ""; width: 4px; height: 4px; background: var(--crit); border-radius: 1px; }
+.gate.ok .dia { border-color: var(--ok); background: #4cc38a22; }
+.gate.ok .dia::after { background: var(--ok); }
+.gate span { font-size: 11px; color: var(--muted); white-space: nowrap; letter-spacing: .02em; }
+.gate.ok span { color: var(--ok); }
+
+/* Main grid */
+.main { display: grid; grid-template-columns: minmax(0, 1fr) 340px; gap: 16px; align-items: start; }
+@media (max-width: 1080px) { .main { grid-template-columns: 1fr; } }
+.stage { position: relative; border-radius: 16px; overflow: hidden; border: 1px solid var(--line); background: var(--night-2); min-width: 0; }
+.stage svg { display: block; width: 100%; height: auto; direction: ltr; }
+.person { cursor: pointer; transition: transform 1.8s cubic-bezier(.45,.05,.25,1); }
+.token { transition: transform 1.6s cubic-bezier(.45,.05,.25,1); }
+.glow { transition: opacity .8s ease; }
+.dots circle { animation: blink 1.3s infinite; }
+.dots circle:nth-child(2) { animation-delay: .18s; }
+.dots circle:nth-child(3) { animation-delay: .36s; }
+@keyframes blink { 0%, 100% { opacity: .25; } 50% { opacity: 1; } }
+.hand { transform-box: fill-box; transform-origin: 50% 100%; animation: wave 1.1s ease-in-out infinite; }
+@keyframes wave { 50% { transform: rotate(-14deg); } }
+.ring { animation: ringp 1.6s ease-out infinite; transform-box: fill-box; transform-origin: center; }
+@keyframes ringp { 0% { opacity: .9; transform: scale(.6); } 100% { opacity: 0; transform: scale(1.6); } }
+.tokpulse { animation: ringp 2.2s ease-out infinite; transform-box: fill-box; transform-origin: center; }
+@media (prefers-reduced-motion: reduce) {
+  .person, .token { transition: none; }
+  .dots circle, .hand, .ring, .tokpulse, .pulse.live { animation: none; }
+}
+.tip {
+  position: absolute; pointer-events: none; z-index: 3; min-width: 190px; max-width: 260px;
+  background: #0b1120f2; border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px;
+  font-size: 12px; color: var(--ink-2); box-shadow: 0 10px 30px #0008;
+}
+.tip b { display: block; color: var(--ink); font-size: 13px; font-weight: 600; }
+.tip code { font-family: var(--f-mono); font-size: 11px; color: var(--muted); direction: ltr; unicode-bidi: isolate; }
+.tip .st { margin-top: 6px; display: flex; align-items: center; gap: 6px; }
+.chip { display: inline-flex; align-items: center; gap: 6px; font-size: 11px; padding: 2px 8px; border-radius: 999px; border: 1px solid var(--line); color: var(--ink-2); white-space: nowrap; }
+.chip i { width: 7px; height: 7px; border-radius: 50%; background: currentColor; }
+.chip.working { color: var(--d-analysis); }
+.chip.waiting { color: var(--wait); }
+.chip.done { color: var(--ok); }
+.chip.mission { color: var(--d-design); }
+.chip.idle { color: var(--muted); }
+
+/* Side column */
+.side { display: flex; flex-direction: column; gap: 12px; min-width: 0; }
+.card { background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 14px 16px; display: flex; flex-direction: column; gap: 10px; }
+.card h2 { margin: 0; font-family: var(--f-display); font-weight: 600; font-size: 16px; display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.card h2 small { font-family: var(--f-body); font-weight: 400; font-size: 12px; color: var(--muted); }
+.decide { border-color: #f0a53a66; background: linear-gradient(180deg, #f0a53a14, transparent 70%), var(--panel); }
+.decide h2 { color: var(--wait); }
+.ask { display: flex; flex-direction: column; gap: 2px; padding-block: 8px; border-top: 1px dashed var(--line); }
+.ask:first-of-type { border-top: 0; padding-top: 0; }
+.ask b { font-weight: 500; }
+.ask span { color: var(--ink-2); font-size: 13px; }
+.ask code { font-family: var(--f-mono); font-size: 12px; color: var(--lamp); direction: ltr; unicode-bidi: isolate; overflow-wrap: anywhere; }
+.hint { color: var(--muted); font-size: 12px; margin: 0; }
+.mis { display: flex; flex-direction: column; gap: 8px; }
+.mis-head { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; }
+.mis-head b { font-weight: 500; }
+.mis-head code { font-family: var(--f-mono); font-size: 11px; color: var(--d-design); direction: ltr; unicode-bidi: isolate; }
+.steps { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(5, 1fr); gap: 4px; }
+.steps li { display: flex; flex-direction: column; align-items: center; gap: 4px; font-size: 10.5px; color: var(--muted); text-align: center; line-height: 1.3; }
+.steps li::before { content: ""; width: 100%; height: 4px; border-radius: 2px; background: var(--line); }
+.steps li.ok { color: var(--ink-2); }
+.steps li.ok::before { background: var(--d-design); }
+.steps li.now::before { background: linear-gradient(90deg, var(--d-design) 50%, var(--line) 50%); }
+.bar { display: flex; height: 10px; border-radius: 999px; overflow: hidden; background: var(--line); }
+.bar i { display: block; height: 100%; transition: flex-grow .8s ease; }
+.legend { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 6px 12px; }
+.legend div { display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--ink-2); }
+.legend i { width: 9px; height: 9px; border-radius: 3px; flex: none; }
+.legend b { margin-inline-start: auto; font-variant-numeric: tabular-nums; color: var(--ink); font-weight: 500; }
+.log { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; max-height: 340px; overflow-y: auto; }
+.log li { display: grid; grid-template-columns: 10px minmax(0, 1fr) auto; gap: 10px; align-items: baseline; padding-block: 7px; border-top: 1px solid var(--line); font-size: 13px; }
+.log li:first-child { border-top: 0; }
+.log .c { width: 8px; height: 8px; border-radius: 50%; transform: translateY(1px); }
+.log .who { font-weight: 500; }
+.log .what { color: var(--ink-2); }
+.log time { font-family: var(--f-mono); font-size: 11px; color: var(--muted); font-variant-numeric: tabular-nums; direction: ltr; }
+.empty { color: var(--muted); font-size: 13px; }
+.note { color: var(--muted); font-size: 12px; text-align: center; margin: 0; }
+.note code { font-family: var(--f-mono); color: var(--ink-2); direction: ltr; unicode-bidi: isolate; }
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <div class="brand">
+      <h1>المكتب الحي</h1>
+      <div class="sub" id="sub"></div>
+    </div>
+    <div class="mode" role="group" aria-label="مصدر البيانات">
+      <button id="m-live" type="button" aria-pressed="false" disabled><span class="pulse" id="pulse"></span>الجلسة المباشرة</button>
+      <button id="m-demo" type="button" aria-pressed="true">جولة تجريبية</button>
+    </div>
+  </header>
+
+  <nav class="track" aria-label="مراحل دورة العمل"><ol id="track"></ol></nav>
+
+  <div class="main">
+    <div class="stage" id="stage">
+      <svg id="scene" viewBox="0 0 1240 880" role="img" aria-label="مقطع في مبنى الشركة يظهر الأقسام التسعة وموظفيها"></svg>
+      <div class="tip" id="tip" hidden></div>
+    </div>
+    <aside class="side">
+      <section class="card decide" id="decide" hidden>
+        <h2>ينتظر قرارك</h2>
+        <div id="asks"></div>
+        <p class="hint">وافق أو ارفض من نافذة Claude Code.</p>
+      </section>
+      <section class="card" id="mission-card" hidden>
+        <h2>الإيفاد <small>تدريب على مهارة</small></h2>
+        <div id="missions" class="mis"></div>
+      </section>
+      <section class="card">
+        <h2>الحضور <small id="headcount"></small></h2>
+        <div class="bar" id="bar"></div>
+        <div class="legend" id="legend"></div>
+      </section>
+      <section class="card">
+        <h2>سجل الجلسة <small id="updated"></small></h2>
+        <ul class="log" id="log"></ul>
+      </section>
+    </aside>
+  </div>
+  <p class="note" id="foot"></p>
+</div>
+
+<script>
+(() => {
+  "use strict";
+  // ---------------------------------------------------------------- roster
+  const DEPTS = {
+    executive:  { ar: "الإدارة التنفيذية", code: "EX" },
+    analysis:   { ar: "التحليل", code: "AN" },
+    design:     { ar: "التصميم والمعمارية", code: "DS" },
+    development:{ ar: "التطوير", code: "DV" },
+    qa:         { ar: "ضمان الجودة", code: "QA" },
+    security:   { ar: "الأمن السيبراني", code: "SC" },
+    devops:     { ar: "العمليات والنشر", code: "OP" },
+    docs:       { ar: "التوثيق والدعم", code: "DC" },
+    hr:         { ar: "الموارد البشرية والتدريب", code: "HR" },
+  };
+  const R = (name, dept, title, model, lead) => ({ name, dept, title, model, lead: !!lead });
+  const ROSTER = [
+    R("ceo","executive","المدير التنفيذي","opus",1), R("cto","executive","المدير التقني","opus"), R("project-manager","executive","مدير المشاريع","sonnet"),
+    R("analysis-lead","analysis","رئيس قسم التحليل","opus",1), R("systems-analyst","analysis","محلل النظم","sonnet"), R("research-analyst","analysis","محلل البحث والجدوى","sonnet"),
+    R("design-lead","design","المعماري الرئيسي","opus",1), R("database-designer","design","مصمم قواعد البيانات","sonnet"), R("api-designer","design","مصمم الواجهات البرمجية","sonnet"), R("ui-ux-designer","design","مصمم تجربة المستخدم","sonnet"),
+    R("tech-lead","development","قائد الفريق التقني","opus",1), R("backend-developer","development","مطور الواجهة الخلفية","sonnet"), R("frontend-developer","development","مطور الواجهة الأمامية","sonnet"), R("database-developer","development","مطور قواعد البيانات","sonnet"), R("integration-developer","development","مطور التكاملات","sonnet"),
+    R("qa-lead","qa","مدير الجودة","sonnet",1), R("test-automation-engineer","qa","مهندس الاختبار الآلي","sonnet"), R("code-reviewer","qa","مراجع الشيفرة","opus"),
+    R("security-lead","security","رئيس الأمن السيبراني","opus",1), R("dependency-auditor","security","مدقق التبعيات والأسرار","haiku"), R("compliance-officer","security","مسؤول الامتثال","sonnet"),
+    R("devops-lead","devops","رئيس العمليات","sonnet",1), R("deployment-engineer","devops","مهندس النشر والبنية","sonnet"), R("sre-engineer","devops","مسؤول المراقبة والحوادث","sonnet"),
+    R("docs-lead","docs","رئيس التوثيق","sonnet",1), R("user-guide-writer","docs","كاتب أدلة المستخدم","sonnet"), R("support-specialist","docs","أخصائي الدعم الفني","haiku"),
+    R("hr-lead","hr","مدير الموارد البشرية","sonnet",1), R("personnel-officer","hr","مسؤول شؤون الموظفين","sonnet"), R("skill-author","hr","مصمم المناهج التدريبية","opus"), R("skill-assessor","hr","مقيّم التدريب","sonnet"),
+  ];
+  const BY = Object.fromEntries(ROSTER.map(r => [r.name, r]));
+  const STAGES = ["planning","analysis","design","development","qa","security","docs","release","deploy"];
+  const STAGE_AR = { planning:"التخطيط", analysis:"التحليل", design:"التصميم", development:"التطوير", qa:"الجودة", security:"الأمن", docs:"التوثيق", release:"تجهيز الإصدار", deploy:"النشر" };
+  const GATES = [["requirements","بوابة المتطلبات","analysis"],["design","بوابة التصميم","design"],["production","بوابة النشر","release"]];
+  const ACTION_AR = { start:"بدأ العمل", read:"يقرأ ملفاً", write:"يكتب ملفاً", run:"يشغّل أمراً", search:"يبحث في الملفات", web:"يبحث في الويب", delegate:"يكلّف موظفاً", review:"يراجع" };
+  const STATE_AR = { working:"يعمل", waiting:"ينتظر موافقتك", done:"أنجز", mission:"في إيفاد", idle:"متاح" };
+  const STATE_VAR = { working:"var(--d-analysis)", waiting:"var(--wait)", done:"var(--ok)", mission:"var(--d-design)", idle:"#3a4360" };
+  const dcol = d => `var(--d-${d})`;
+  const CS = getComputedStyle(document.documentElement);
+  const hex = d => CS.getPropertyValue(`--d-${d}`).trim();
+  const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;" }[c]));
+
+  // ---------------------------------------------------------------- geometry
+  const NS = "http://www.w3.org/2000/svg";
+  const W = 1240, ROOF = 170, FH = 210, SLAB = 14, CORE = 56, BX = 120, BR = 1120;
+  const RX0 = BX + CORE, RW = (BR - CORE - RX0) / 3, GY = ROOF + 3 * FH;
+  const LAYOUT = { executive:[2,2], analysis:[2,1], design:[2,0], development:[1,0], qa:[1,1], security:[1,2], devops:[0,0], docs:[0,1], hr:[0,2] };
+  const fTop = f => ROOF + (2 - f) * FH;
+  const fBase = f => fTop(f) + FH - SLAB;       // floor surface inside a room
+  const rX = c => RX0 + c * RW;
+  const pathY = f => fBase(f) - 8;
+  const roomMid = d => { const [f, c] = LAYOUT[d]; return [rX(c) + RW / 2, pathY(f)]; };
+  const LC = BX + CORE / 2, RC = BR - CORE / 2;
+
+  const el = (tag, attrs = {}, parent) => {
+    const n = document.createElementNS(NS, tag);
+    for (const k in attrs) n.setAttribute(k, attrs[k]);
+    if (parent) parent.appendChild(n);
+    return n;
+  };
+
+  // Project route in work-cycle order; stage stops carry the stage key.
+  const ROUTE = [
+    ["planning", roomMid("executive")], ["analysis", roomMid("analysis")], ["design", roomMid("design")],
+    [null, [LC, pathY(2)]], [null, [LC, pathY(1)]],
+    ["development", roomMid("development")], ["qa", roomMid("qa")], ["security", roomMid("security")],
+    [null, [RC, pathY(1)]], [null, [RC, pathY(0)]],
+    [null, roomMid("hr")], ["docs", roomMid("docs")], ["release", roomMid("devops")],
+    [null, [LC, pathY(0)]], [null, [LC - 40, GY + 26]], ["deploy", [62, GY + 26]],
+  ];
+
+  // ---------------------------------------------------------------- static scene
+  const svg = document.getElementById("scene");
+  const defs = el("defs", {}, svg);
+  defs.innerHTML = `
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0a1022"/><stop offset=".55" stop-color="#1b2141"/><stop offset=".85" stop-color="#3f2f4f"/><stop offset="1" stop-color="#6b4352"/>
+    </linearGradient>
+    <linearGradient id="winsky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1a2246"/><stop offset="1" stop-color="#5a3a52"/></linearGradient>
+    <pattern id="hatch" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+      <rect width="7" height="7" fill="#262d43"/><line x1="0" y1="0" x2="0" y2="7" stroke="#3a4360" stroke-width="2"/>
+    </pattern>
+    <radialGradient id="cone" cx=".5" cy="0" r="1"><stop offset="0" stop-color="#ffdca0" stop-opacity=".55"/><stop offset=".55" stop-color="#ffdca0" stop-opacity=".12"/><stop offset="1" stop-color="#ffdca0" stop-opacity="0"/></radialGradient>
+    <linearGradient id="wall" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2a2a3c"/><stop offset="1" stop-color="#3a3444"/></linearGradient>
+    <radialGradient id="screen" cx=".5" cy=".5" r=".6"><stop offset="0" stop-color="#bfe7ff"/><stop offset="1" stop-color="#6bb3e8"/></radialGradient>
+    <filter id="soft" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="6"/></filter>`;
+  for (const d in DEPTS) {
+    defs.insertAdjacentHTML("beforeend",
+      `<linearGradient id="lit-${d}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3b3446"/><stop offset="1" stop-color="${hex(d)}" stop-opacity=".35"/></linearGradient>`);
+  }
+
+  el("rect", { width: W, height: 880, fill: "url(#sky)" }, svg);
+  // Stars: fixed seed so the sky is identical on every load.
+  let seed = 7; const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+  const stars = el("g", { fill: "#e9e2ff" }, svg);
+  for (let i = 0; i < 70; i++) el("circle", { cx: rnd() * W, cy: rnd() * 150, r: rnd() * 1.2 + .3, opacity: rnd() * .6 + .2 }, stars);
+  el("circle", { cx: 1170, cy: 70, r: 22, fill: "#f4e7c8", opacity: .9 }, svg);
+  el("circle", { cx: 1180, cy: 64, r: 20, fill: "#0f1630" }, svg);
+  // distant skyline
+  const sky2 = el("g", { fill: "#1a2038" }, svg);
+  [[0,700,70],[60,640,50],[1130,660,60],[1185,610,55]].forEach(([x,y,w]) => el("rect", { x, y, width: w, height: GY - y }, sky2));
+
+  // Building shell (section cut = hatched concrete)
+  const shell = el("g", {}, svg);
+  el("rect", { x: BX - 14, y: ROOF - 34, width: BR - BX + 28, height: 34, fill: "url(#hatch)" }, shell);
+  el("rect", { x: BX - 14, y: ROOF - 34, width: BR - BX + 28, height: 34, fill: "none", stroke: "#4a5474", "stroke-width": 1 }, shell);
+  // rooftop: sign + water tank
+  const sign = el("g", {}, shell);
+  el("rect", { x: 520, y: ROOF - 92, width: 340, height: 46, rx: 4, fill: "#10172a", stroke: "#4a5474" }, sign);
+  el("line", { x1: 560, y1: ROOF - 46, x2: 560, y2: ROOF - 34, stroke: "#4a5474", "stroke-width": 3 }, sign);
+  el("line", { x1: 820, y1: ROOF - 46, x2: 820, y2: ROOF - 34, stroke: "#4a5474", "stroke-width": 3 }, sign);
+  const st = el("text", { x: 690, y: ROOF - 61, "text-anchor": "middle", "font-family": "Noto Kufi Arabic, sans-serif", "font-size": 24, "font-weight": 700, fill: "#ffdca0" }, sign);
+  st.textContent = "شركة البرمجيات";
+  el("text", { x: 690, y: ROOF - 61, "text-anchor": "middle", "font-family": "Noto Kufi Arabic, sans-serif", "font-size": 24, "font-weight": 700, fill: "#ffdca0", filter: "url(#soft)", opacity: .6 }, sign).textContent = "شركة البرمجيات";
+  el("rect", { x: 190, y: ROOF - 80, width: 64, height: 46, rx: 6, fill: "#1a2138", stroke: "#3a4360" }, shell);
+  el("line", { x1: 200, y1: ROOF - 34, x2: 200, y2: ROOF - 22, stroke: "#3a4360", "stroke-width": 3 }, shell);
+
+  // Floors
+  const rooms = {};
+  for (const d in LAYOUT) {
+    const [f, c] = LAYOUT[d];
+    const x = rX(c), y = fTop(f), h = FH - SLAB;
+    const g = el("g", {}, svg);
+    el("rect", { x, y, width: RW, height: h, fill: CS.getPropertyValue("--room-off").trim() }, g);
+    const lit = el("rect", { x, y, width: RW, height: h, fill: `url(#lit-${d})`, opacity: 0, class: "glow" }, g);
+    // window to the dusk outside
+    el("rect", { x: x + 22, y: y + 46, width: 54, height: 66, rx: 3, fill: "url(#winsky)", stroke: "#4a4458" }, g);
+    el("line", { x1: x + 49, y1: y + 46, x2: x + 49, y2: y + 112, stroke: "#4a4458" }, g);
+    el("line", { x1: x + 22, y1: y + 79, x2: x + 76, y2: y + 79, stroke: "#4a4458" }, g);
+    // ceiling lamp + light cone
+    const lx = x + RW / 2;
+    el("line", { x1: lx, y1: y, x2: lx, y2: y + 14, stroke: "#4a5474" }, g);
+    el("path", { d: `M${lx - 14},${y + 22} L${lx + 14},${y + 22} L${lx + 8},${y + 14} L${lx - 8},${y + 14} Z`, fill: "#3a4360" }, g);
+    const cone = el("path", { d: `M${lx - 14},${y + 22} L${lx + 14},${y + 22} L${lx + 120},${y + h} L${lx - 120},${y + h} Z`, fill: "url(#cone)", opacity: 0, class: "glow" }, g);
+    const bulb = el("ellipse", { cx: lx, cy: y + 23, rx: 10, ry: 3, fill: "#ffdca0", opacity: 0, class: "glow" }, g);
+    // labels (reading edge = right)
+    const t1 = el("text", { x: x + RW - 16, y: y + 30, "text-anchor": "end", "font-family": "Noto Kufi Arabic, sans-serif", "font-size": 15, "font-weight": 600, fill: "#ece6da" }, g);
+    t1.textContent = DEPTS[d].ar;
+    const t2 = el("text", { x: x + RW - 16, y: y + 48, "text-anchor": "end", "font-family": "IBM Plex Mono, monospace", "font-size": 10.5, fill: "#8f96a8", "letter-spacing": "1" }, g);
+    t2.textContent = `${DEPTS[d].code}·0${f}${c + 1}`;
+    // progress meter
+    el("rect", { x: x + RW - 96, y: y + 56, width: 80, height: 3, rx: 1.5, fill: "#2a3350" }, g);
+    const prog = el("rect", { x: x + RW - 96, y: y + 56, width: 0, height: 3, rx: 1.5, fill: hex(d) }, g);
+    prog.style.transition = "width .8s ease";
+    // department-specific furniture
+    furniture(d, x, y, h, g);
+    rooms[d] = { lit, cone, bulb, prog };
+  }
+  // slabs + partitions + outer walls (drawn over rooms as cut lines)
+  for (let f = 0; f < 3; f++) {
+    el("rect", { x: BX - 14, y: fBase(f), width: BR - BX + 28, height: SLAB, fill: "url(#hatch)" }, svg);
+    for (let c = 1; c < 3; c++) el("rect", { x: rX(c) - 4, y: fTop(f), width: 8, height: FH - SLAB, fill: "url(#hatch)" }, svg);
+    // level marks (architectural elevation datum), on the reading edge
+    const lvl = (f * 4.2).toFixed(2);
+    const ly = fBase(f) + SLAB;
+    el("path", { d: `M${BR + 26},${ly} l-7,-9 h14 z`, fill: "none", stroke: "#8f96a8" }, svg);
+    el("line", { x1: BR + 16, y1: ly, x2: BR + 70, y2: ly, stroke: "#8f96a8", "stroke-width": .8 }, svg);
+    const lt = el("text", { x: BR + 36, y: ly - 4, "font-family": "IBM Plex Mono, monospace", "font-size": 10, fill: "#8f96a8" }, svg);
+    lt.textContent = `+${lvl}`;
+  }
+  el("rect", { x: BX - 14, y: ROOF, width: 14, height: GY - ROOF, fill: "url(#hatch)" }, svg);
+  el("rect", { x: BR, y: ROOF, width: 14, height: GY - ROOF, fill: "url(#hatch)" }, svg);
+  // stair cores
+  for (const [cx0, floors] of [[BX, [2, 1]], [BR - CORE, [1, 0]]]) {
+    for (let f = 0; f < 3; f++) el("rect", { x: cx0, y: fTop(f), width: CORE, height: FH - SLAB, fill: "#121a2b" }, svg);
+    const fl = floors[0];
+    const g = el("g", { stroke: "#3e4866", "stroke-width": 2, fill: "none" }, svg);
+    const steps = 9, x1 = cx0 + 8, x2 = cx0 + CORE - 8, top = fBase(fl) + SLAB, bot = fBase(fl - 1);
+    let dstr = "";
+    for (let i = 0; i <= steps; i++) {
+      const yy = top + (bot - top) * (i / steps);
+      const xx = cx0 === BX ? x1 + (x2 - x1) * (i / steps) : x2 - (x2 - x1) * (i / steps);
+      dstr += `${i ? "L" : "M"}${xx},${yy} `;
+    }
+    el("path", { d: dstr }, g);
+  }
+  // exit door at ground floor, left core
+  el("rect", { x: BX + 10, y: fBase(0) - 74, width: CORE - 20, height: 74, rx: 2, fill: "#0e1424", stroke: "#4a5474" }, svg);
+  el("circle", { cx: BX + CORE - 18, cy: fBase(0) - 36, r: 2, fill: "#d6a24a" }, svg);
+  // street
+  el("rect", { x: 0, y: GY, width: W, height: 880 - GY, fill: "#141a2a" }, svg);
+  el("rect", { x: 0, y: GY, width: W, height: 8, fill: "#222a3f" }, svg);
+  el("line", { x1: 0, y1: GY + 52, x2: W, y2: GY + 52, stroke: "#2e3752", "stroke-width": 3, "stroke-dasharray": "26 22" }, svg);
+  for (const lx of [300, 640, 980]) {
+    el("line", { x1: lx, y1: GY + 4, x2: lx, y2: GY - 62, stroke: "#39425e", "stroke-width": 3 }, svg);
+    el("circle", { cx: lx, cy: GY - 64, r: 22, fill: "#ffdca0", opacity: .12, filter: "url(#soft)" }, svg);
+    el("circle", { cx: lx, cy: GY - 64, r: 4, fill: "#ffdca0" }, svg);
+  }
+  // launch flag
+  const flag = el("g", {}, svg);
+  el("line", { x1: 62, y1: GY + 30, x2: 62, y2: GY - 70, stroke: "#8f96a8", "stroke-width": 2.5 }, flag);
+  const flagCloth = el("path", { d: `M62,${GY - 70} q20,-6 38,2 q-18,8 -38,14 z`, fill: "#3a4360" }, flag);
+  const flagLbl = el("text", { x: 62, y: GY + 46, "text-anchor": "middle", "font-family": "Readex Pro, sans-serif", "font-size": 11, fill: "#8f96a8" }, flag);
+  flagLbl.textContent = "الإطلاق";
+
+  // Route
+  const routeG = el("g", {}, svg);
+  const routeD = pts => pts.map(([, [x, y]], i) => `${i ? "L" : "M"}${x},${y}`).join(" ");
+  const routeAll = el("path", { d: routeD(ROUTE), fill: "none", stroke: "#d6a24a", "stroke-width": 2, "stroke-dasharray": "2 9", "stroke-linecap": "round", opacity: .75 }, routeG);
+  const routeDone = el("path", { d: "", fill: "none", stroke: "#d6a24a", "stroke-width": 4, "stroke-linecap": "round", "stroke-linejoin": "round" }, routeG);
+  el("path", { d: "", fill: "none", stroke: "#d6a24a", "stroke-width": 10, opacity: .18, filter: "url(#soft)", id: "routeGlow" }, routeG);
+  for (const [s, [x, y]] of ROUTE) if (s && s !== "deploy") el("circle", { cx: x, cy: y, r: 3.5, fill: "#0c1220", stroke: "#d6a24a", "stroke-width": 1.5 }, routeG);
+
+  // Gate plaques on the route
+  const gatePos = { requirements: [rX(1), pathY(2)], design: [LC, fTop(1) - 24], production: [LC, fBase(0) - 96] };
+  const gateEls = {};
+  for (const [k, label] of GATES) {
+    const [gx, gy] = gatePos[k];
+    const g = el("g", { transform: `translate(${gx},${gy})` }, svg);
+    const plate = el("rect", { x: -48, y: -13, width: 96, height: 26, rx: 13, fill: "#0e1526", stroke: "#e5645b" }, g);
+    const dia = el("rect", { x: -40, y: -5, width: 10, height: 10, transform: "rotate(45 -35 0)", fill: "#e5645b" }, g);
+    const t = el("text", { x: 8, y: 4, "text-anchor": "middle", "font-family": "Readex Pro, sans-serif", "font-size": 11, fill: "#ece6da" }, g);
+    t.textContent = label.replace("بوابة ", "");
+    gateEls[k] = { plate, dia };
+  }
+
+  // Desks + people (persistent nodes so moves animate)
+  const desks = {}, people = {};
+  const trainingSpots = (() => { const [f, c] = LAYOUT.hr; return [0, 1, 2].map(i => [rX(c) + 34 + i * 26, fBase(f) - 2]); })();
+  for (const d in LAYOUT) {
+    const [f, c] = LAYOUT[d];
+    const staff = ROSTER.filter(r => r.dept === d);
+    const x0 = rX(c) + (d === "hr" ? 110 : 96), x1 = rX(c) + RW - 30;
+    staff.forEach((r, i) => {
+      const dx = staff.length === 1 ? (x0 + x1) / 2 : x0 + (x1 - x0) * (i / (staff.length - 1));
+      const base = fBase(f);
+      desks[r.name] = desk(dx, base, d);
+      people[r.name] = person(r, dx, base);
+    });
+  }
+  // project token
+  const token = el("g", { class: "token" }, svg);
+  el("circle", { r: 18, fill: "#d6a24a", opacity: .35, class: "tokpulse" }, token);
+  el("path", { d: "M-13,-9 h9 l3,3 h14 v16 h-26 z", fill: "#f6e3b4", stroke: "#a8741c", "stroke-width": 1.5 }, token);
+  el("path", { d: "M-13,-3 h26", stroke: "#a8741c", "stroke-width": 1.2 }, token);
+
+  function furniture(d, x, y, h, g) {
+    const fl = y + h;
+    const shade = "#2b3350", edge = "#3e4866";
+    if (d === "executive") { // meeting table + plant
+      el("rect", { x: x + 92, y: fl - 112, width: 90, height: 50, rx: 3, fill: "#20283f", stroke: edge }, g);
+      [0, 1, 2].forEach(i => el("rect", { x: x + 100 + i * 28, y: fl - 104, width: 18, height: 34, fill: "#2c3654" }, g));
+    } else if (d === "analysis") { // pinboard with cards
+      el("rect", { x: x + 92, y: fl - 140, width: 100, height: 62, rx: 3, fill: "#2a2f45", stroke: edge }, g);
+      [[98,-132],[130,-128],[162,-134],[104,-104],[140,-100]].forEach(([a, b], i) => el("rect", { x: x + a, y: fl + b, width: 24, height: 16, fill: ["#6c9cf0","#e2bd4a","#ece6da","#a27be6","#4fbf8f"][i], opacity: .55 }, g));
+    } else if (d === "design") { // blueprint on wall
+      el("rect", { x: x + 92, y: fl - 140, width: 110, height: 64, fill: "#1d3157", stroke: "#4f6ea8" }, g);
+      el("path", { d: `M${x + 100},${fl - 88} h40 v-40 h40 v40 h14 M${x + 120},${fl - 128} v40`, fill: "none", stroke: "#9cb8ec", "stroke-width": 1 }, g);
+    } else if (d === "development") { // server rack
+      el("rect", { x: x + 22, y: fl - 120, width: 28, height: 120, fill: shade, stroke: edge }, g);
+      for (let i = 0; i < 6; i++) el("circle", { cx: x + 30, cy: fl - 110 + i * 18, r: 2, fill: i % 2 ? "#4fbf8f" : "#d6a24a" }, g);
+    } else if (d === "qa") { // checklist board
+      el("rect", { x: x + 92, y: fl - 140, width: 70, height: 60, rx: 2, fill: "#ece6da", opacity: .85 }, g);
+      [0, 1, 2].forEach(i => { el("path", { d: `M${x + 100},${fl - 124 + i * 16} l4,4 l7,-8`, stroke: "#2e9e5b", "stroke-width": 2, fill: "none" }, g); el("rect", { x: x + 116, y: fl - 126 + i * 16, width: 38, height: 4, fill: "#8f96a8" }, g); });
+    } else if (d === "security") { // vault door
+      el("circle", { cx: x + 126, cy: fl - 108, r: 28, fill: shade, stroke: edge, "stroke-width": 3 }, g);
+      el("circle", { cx: x + 126, cy: fl - 108, r: 9, fill: "none", stroke: "#8f96a8", "stroke-width": 2 }, g);
+      [0, 60, 120].forEach(a => el("line", { x1: x + 126, y1: fl - 126, x2: x + 126, y2: fl - 90, stroke: "#8f96a8", "stroke-width": 2, transform: `rotate(${a} ${x + 126} ${fl - 108})` }, g));
+    } else if (d === "devops") { // pipeline board
+      el("rect", { x: x + 92, y: fl - 140, width: 120, height: 44, rx: 3, fill: "#1b2238", stroke: edge }, g);
+      [0, 1, 2, 3].forEach(i => el("circle", { cx: x + 108 + i * 30, cy: fl - 118, r: 7, fill: i < 3 ? "#4fbf8f" : "#3a4360" }, g));
+      el("line", { x1: x + 115, y1: fl - 118, x2: x + 191, y2: fl - 118, stroke: "#4a5474", "stroke-width": 2 }, g);
+    } else if (d === "docs") { // bookshelf
+      el("rect", { x: x + 92, y: fl - 150, width: 96, height: 70, fill: "#241d1a", stroke: "#4a3d30" }, g);
+      for (let row = 0; row < 2; row++) for (let i = 0; i < 9; i++) el("rect", { x: x + 96 + i * 10, y: fl - 146 + row * 34, width: 8, height: 30 - (i % 3) * 4, fill: ["#4fc1cf","#d6a24a","#a27be6","#e06a64"][(i + row) % 4], opacity: .7 }, g);
+    } else if (d === "hr") { // training whiteboard
+      el("rect", { x: x + 22, y: fl - 150, width: 78, height: 54, rx: 2, fill: "#ece6da", opacity: .9 }, g);
+      el("path", { d: `M${x + 30},${fl - 108} q10,-22 22,-6 t24,-10`, stroke: "#a27be6", "stroke-width": 2, fill: "none" }, g);
+      el("text", { x: x + 61, y: fl - 132, "text-anchor": "middle", "font-family": "Readex Pro, sans-serif", "font-size": 10, fill: "#3a2f55" }, g).textContent = "غرفة التدريب";
+    }
+  }
+
+  function desk(x, base, d) {
+    const g = el("g", {}, svg);
+    el("rect", { x: x - 22, y: base - 34, width: 44, height: 5, rx: 1.5, fill: "#5a4636" }, g);
+    el("rect", { x: x - 19, y: base - 29, width: 3, height: 29, fill: "#3e3026" }, g);
+    el("rect", { x: x + 16, y: base - 29, width: 3, height: 29, fill: "#3e3026" }, g);
+    el("rect", { x: x - 11, y: base - 54, width: 22, height: 16, rx: 2, fill: "#10172a", stroke: "#3e4866" }, g);
+    const screen = el("rect", { x: x - 9, y: base - 52, width: 18, height: 12, rx: 1, fill: hex(d), opacity: .08, class: "glow" }, g);
+    el("rect", { x: x - 2, y: base - 38, width: 4, height: 4, fill: "#3e4866" }, g);
+    const away = el("g", { opacity: 0, class: "glow" }, g);
+    el("rect", { x: x - 20, y: base - 76, width: 40, height: 18, rx: 2, fill: "#f6ecc8", transform: `rotate(-5 ${x} ${base - 67})` }, away);
+    el("text", { x, y: base - 63, "text-anchor": "middle", "font-family": "Readex Pro, sans-serif", "font-size": 9.5, fill: "#6b4f10", transform: `rotate(-5 ${x} ${base - 67})` }, away).textContent = "في إيفاد";
+    return { screen, away };
+  }
+
+  function person(r, x, base) {
+    const g = el("g", { class: "person", tabindex: 0, role: "button", "aria-label": `${r.title} (${r.name})`, "data-name": r.name }, svg);
+    const body = el("g", {}, g);
+    // seated torso behind the desk, head, hair
+    el("path", { d: "M-12,-30 Q-12,-50 0,-50 Q12,-50 12,-30 Z", fill: hex(r.dept) }, body);
+    el("path", { d: "M2,-30 Q2,-49 0,-50 Q12,-50 12,-30 Z", fill: "#000", opacity: .18 }, body);
+    el("circle", { cx: 0, cy: -60, r: 9.5, fill: "#e7bf98" }, body);
+    el("path", { d: "M-9.5,-61 Q-9,-72 0,-72 Q9,-72 9.5,-61 Q5,-66 0,-66 Q-5,-66 -9.5,-61 Z", fill: "#2d211b" }, body);
+    if (r.lead) el("circle", { cx: -6, cy: -40, r: 2.6, fill: "#d6a24a", stroke: "#0c1220", "stroke-width": .8 }, body);
+    // waiting: raised hand + amber ring
+    const wait = el("g", { opacity: 0 }, g);
+    el("circle", { cx: 0, cy: -60, r: 16, fill: "none", stroke: "#f0a53a", "stroke-width": 2, class: "ring" }, wait);
+    const hand = el("g", { class: "hand" }, wait);
+    el("path", { d: "M9,-42 L17,-74", stroke: hex(r.dept), "stroke-width": 6, "stroke-linecap": "round" }, hand);
+    el("circle", { cx: 17.5, cy: -77, r: 4.2, fill: "#e7bf98" }, hand);
+    // working: speech chip with action icon + typing dots
+    const work = el("g", { opacity: 0, transform: "translate(0,-94)" }, g);
+    el("rect", { x: -25, y: -11, width: 50, height: 22, rx: 11, fill: "#f4efe6" }, work);
+    el("path", { d: "M-4,11 L0,16 L4,11 Z", fill: "#f4efe6" }, work);
+    const icon = el("path", { d: "", fill: "none", stroke: "#2a3147", "stroke-width": 1.6, "stroke-linecap": "round", "stroke-linejoin": "round", transform: "translate(-12,0)" }, work);
+    const dots = el("g", { class: "dots", fill: "#5a6380" }, work);
+    [3, 10, 17].forEach(cx => el("circle", { cx, cy: 0, r: 2.2 }, dots));
+    // done: check medal
+    const done = el("g", { opacity: 0, transform: "translate(14,-74)" }, g);
+    el("circle", { r: 8.5, fill: "#4cc38a" }, done);
+    el("path", { d: "M-3.8,0 L-1,3 L4,-3", stroke: "#0c1220", "stroke-width": 2, fill: "none", "stroke-linecap": "round" }, done);
+    // mission: briefcase
+    const bag = el("g", { opacity: 0 }, g);
+    el("rect", { x: 9, y: -28, width: 15, height: 11, rx: 2, fill: "#8a5a2b", stroke: "#4e3216" }, bag);
+    el("path", { d: "M13,-28 v-3 h7 v3", fill: "none", stroke: "#4e3216", "stroke-width": 1.5 }, bag);
+    g.style.transform = `translate(${x}px, ${base - 4}px)`;
+    return { g, wait, work, icon, done, bag, home: [x, base - 4] };
+  }
+
+  const ICONS = {
+    read: "M-6,-3 Q-3,-6 0,-3 Q3,-6 6,-3 V5 Q3,2 0,5 Q-3,2 -6,5 Z M0,-3 V5",
+    write: "M-5,5 L-4,1 L3,-6 L6,-3 L-1,4 Z M1,-4 L4,-1",
+    run: "M-7,-5 H7 V5 H-7 Z M-4,-2 L-1,0 L-4,2 M1,3 H4",
+    search: "M-2,-2 m-4,0 a4,4 0 1,0 8,0 a4,4 0 1,0 -8,0 M1,1 L5,5",
+    web: "M0,0 m-6,0 a6,6 0 1,0 12,0 a6,6 0 1,0 -12,0 M-6,0 H6 M0,-6 Q-4,0 0,6 Q4,0 0,-6",
+    delegate: "M-6,0 H5 M1,-4 L5,0 L1,4",
+    review: "M-7,0 Q0,-7 7,0 Q0,7 -7,0 Z M0,0 m-2,0 a2,2 0 1,0 4,0 a2,2 0 1,0 -4,0",
+    start: "M-6,-5 H6 V3 H-6 Z M-3,6 H3",
+  };
+
+  // ---------------------------------------------------------------- rendering
+  const $ = id => document.getElementById(id);
+  let current = null;
+
+  function derive(s) {
+    const agents = s.agents || {};
+    const missions = (s.missions || []).filter(m => BY[m.employee]);
+    const away = new Set(missions.filter(m => !(m.steps || {}).certified).map(m => m.employee));
+    const stateOf = n => away.has(n) ? "mission" : (agents[n]?.state || "idle");
+    return { agents, missions, away, stateOf };
+  }
+
+  function render(s) {
+    current = s;
+    const { agents, missions, away, stateOf } = derive(s);
+    const stage = STAGES.includes(s.stage) ? s.stage : null;
+    const si = stage ? STAGES.indexOf(stage) : -1;
+    const gates = s.gates || {};
+
+    // header
+    const upd = s.updated_at ? new Date(s.updated_at) : null;
+    $("sub").innerHTML = `<span>المشروع: <b>${esc(s.project || "بلا اسم")}</b></span>` +
+      `<span>المرحلة: <b>${esc(stage ? STAGE_AR[stage] : "لم تبدأ")}</b></span>` +
+      (s.fix_cycle ? `<span>دورة التصحيح: <b>${esc(s.fix_cycle)} من 3</b></span>` : "");
+    $("updated").textContent = upd && !isNaN(upd) ? `آخر تحديث ${upd.toLocaleTimeString("ar", { hour: "2-digit", minute: "2-digit" })}` : "";
+
+    // stage track
+    let html = "";
+    STAGES.forEach((k, i) => {
+      const cls = i < si ? "past" : i === si ? "now" : "";
+      if (i) html += `<li aria-hidden="true" class="seg ${i <= si ? "past" : ""}"></li>`;
+      html += `<li class="stg ${cls}"${i === si ? ' aria-current="step"' : ""}><span class="dot"></span><span>${STAGE_AR[k]}</span></li>`;
+      const g = GATES.find(x => x[2] === k);
+      if (g) {
+        const ok = gates[g[0]] === "approved";
+        html += `<li aria-hidden="true" class="seg ${i < si ? "past" : ""}"></li><li class="gate ${ok ? "ok" : ""}"><span class="dia"></span><span>${g[1]}${ok ? " ✓" : ""}</span></li>`;
+      }
+    });
+    $("track").innerHTML = html;
+
+    // rooms lit when anyone there is active, or the project is there
+    const litDepts = new Set();
+    ROSTER.forEach(r => { if (stateOf(r.name) !== "idle") litDepts.add(away.has(r.name) ? "hr" : r.dept); });
+    if (away.size) litDepts.add("hr");
+    const stageDept = { planning:"executive", analysis:"analysis", design:"design", development:"development", qa:"qa", security:"security", docs:"docs", release:"devops" }[stage];
+    if (stageDept) litDepts.add(stageDept);
+    for (const d in rooms) {
+      const on = litDepts.has(d);
+      rooms[d].lit.setAttribute("opacity", on ? 1 : 0);
+      rooms[d].cone.setAttribute("opacity", on ? 1 : 0);
+      rooms[d].bulb.setAttribute("opacity", on ? 1 : 0);
+      const p = Math.max(0, Math.min(100, Number((s.progress || {})[d]) || 0));
+      rooms[d].prog.setAttribute("width", (80 * p) / 100);
+    }
+
+    // people
+    let spot = 0;
+    ROSTER.forEach(r => {
+      const P = people[r.name], D = desks[r.name];
+      const st = stateOf(r.name), a = agents[r.name] || {};
+      const onMission = st === "mission";
+      let [x, y] = P.home;
+      if (onMission) { [x, y] = trainingSpots[Math.min(spot++, trainingSpots.length - 1)]; y -= 2; }
+      P.g.style.transform = `translate(${x}px, ${y}px)`;
+      P.wait.setAttribute("opacity", st === "waiting" ? 1 : 0);
+      P.work.setAttribute("opacity", st === "working" ? 1 : 0);
+      P.done.setAttribute("opacity", st === "done" ? 1 : 0);
+      P.bag.setAttribute("opacity", onMission ? 1 : 0);
+      P.icon.setAttribute("d", ICONS[a.action] || ICONS.start);
+      D.screen.setAttribute("opacity", st === "working" || st === "waiting" ? .95 : st === "done" ? .3 : .08);
+      D.away.setAttribute("opacity", onMission ? 1 : 0);
+    });
+
+    // route + token + gates
+    const stopIdx = stage ? ROUTE.findIndex(([k]) => k === stage) : 0;
+    const donePts = ROUTE.slice(0, Math.max(1, stopIdx + 1));
+    const dd = donePts.length > 1 ? routeD(donePts) : "";
+    routeDone.setAttribute("d", dd);
+    $("routeGlow").setAttribute("d", dd);
+    const [tx, ty] = ROUTE[Math.max(0, stopIdx)][1];
+    token.style.transform = `translate(${tx}px, ${ty - 26}px)`;
+    for (const [k] of GATES) {
+      const ok = gates[k] === "approved";
+      gateEls[k].plate.setAttribute("stroke", ok ? "#4cc38a" : "#e5645b");
+      gateEls[k].dia.setAttribute("fill", ok ? "#4cc38a" : "#e5645b");
+    }
+    const launched = stage === "deploy" && gates.production === "approved";
+    flagCloth.setAttribute("fill", launched ? "#4cc38a" : "#3a4360");
+
+    // decisions
+    const asks = [];
+    if (s.awaiting_approval) asks.push(`<div class="ask"><b>${esc(s.awaiting_approval.title || "قرار مطلوب")}</b>${s.awaiting_approval.detail ? `<span>${esc(s.awaiting_approval.detail)}</span>` : ""}</div>`);
+    ROSTER.forEach(r => { const a = agents[r.name]; if (a?.state === "waiting") asks.push(`<div class="ask"><b>${esc(r.title)}</b><span>يطلب صلاحية: ${esc(ACTION_AR[a.action] || "تنفيذ أداة")}</span>${a.note ? `<code>${esc(a.note)}</code>` : ""}</div>`); });
+    $("decide").hidden = !asks.length;
+    $("asks").innerHTML = asks.join("");
+
+    // missions
+    const STEP = [["author","المنهج"],["assessor","الاختبار"],["test","التجربة"],["personnel","التسجيل"],["certified","الشهادة"]];
+    $("mission-card").hidden = !missions.length;
+    $("missions").innerHTML = missions.map(m => {
+      const stp = m.steps || {};
+      const firstOpen = STEP.findIndex(([k]) => !stp[k]);
+      return `<div class="mis"><div class="mis-head"><b>${esc(BY[m.employee].title)}</b><code>${esc(m.skill || "")}</code></div>` +
+        `<ol class="steps">${STEP.map(([k, l], i) => `<li class="${stp[k] ? "ok" : i === firstOpen ? "now" : ""}">${l}</li>`).join("")}</ol></div>`;
+    }).join("");
+
+    // attendance
+    const counts = { working: 0, waiting: 0, mission: 0, done: 0, idle: 0 };
+    ROSTER.forEach(r => counts[stateOf(r.name)]++);
+    $("headcount").textContent = `${ROSTER.length - counts.idle} من ${ROSTER.length} في العمل`;
+    $("bar").innerHTML = Object.entries(counts).map(([k, v]) => `<i style="flex-grow:${v};background:${STATE_VAR[k]}" title="${STATE_AR[k]}: ${v}"></i>`).join("");
+    $("legend").innerHTML = Object.entries(counts).map(([k, v]) => `<div><i style="background:${STATE_VAR[k]}"></i>${STATE_AR[k]}<b>${v}</b></div>`).join("");
+
+    // log
+    const ev = Array.isArray(s.events) ? s.events.slice(0, 40) : [];
+    $("log").innerHTML = ev.length ? ev.map(e => {
+      const r = BY[e.agent];
+      const t = e.t ? new Date(e.t) : null;
+      const tt = t && !isNaN(t) ? t.toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit" }) : "";
+      return `<li><span class="c" style="background:${r ? dcol(r.dept) : "var(--muted)"}"></span><span><span class="who">${esc(r ? r.title : e.agent)}</span> <span class="what">${esc(e.text)}</span></span><time>${tt}</time></li>`;
+    }).join("") : `<li class="empty">لا أحداث بعد.</li>`;
+    if (tipFor) showTip(tipFor);
+  }
+
+  // ---------------------------------------------------------------- tooltip
+  const stage = $("stage"), tip = $("tip");
+  let tipFor = null;
+  function showTip(name) {
+    tipFor = name;
+    const r = BY[name], P = people[name];
+    if (!r || !current) return;
+    const { agents, stateOf } = derive(current);
+    const st = stateOf(name), a = agents[name] || {};
+    const act = st === "working" ? (a.action === "delegate" && a.target && BY[a.target] ? `يكلّف ${BY[a.target].title}` : ACTION_AR[a.action] || "يعمل") : "";
+    tip.innerHTML = `<b>${esc(r.title)}${r.lead ? " ★" : ""}</b><code>${esc(r.name)} · ${esc(r.model)}</code><div>${esc(DEPTS[r.dept].ar)}</div>` +
+      `<div class="st"><span class="chip ${st}"><i></i>${STATE_AR[st]}</span>${act ? `<span>${esc(act)}</span>` : ""}</div>${a.note ? `<div>${esc(a.note)}</div>` : ""}`;
+    tip.hidden = false;
+    const sb = stage.getBoundingClientRect(), pb = P.g.getBoundingClientRect();
+    let left = pb.left - sb.left + pb.width / 2 - tip.offsetWidth / 2;
+    left = Math.max(8, Math.min(sb.width - tip.offsetWidth - 8, left));
+    let top = pb.top - sb.top - tip.offsetHeight - 10;
+    if (top < 8) top = pb.bottom - sb.top + 10;
+    tip.style.left = left + "px"; tip.style.top = top + "px";
+  }
+  const hideTip = () => { tipFor = null; tip.hidden = true; };
+  Object.entries(people).forEach(([name, P]) => {
+    P.g.addEventListener("mouseenter", () => showTip(name));
+    P.g.addEventListener("mouseleave", hideTip);
+    P.g.addEventListener("focus", () => showTip(name));
+    P.g.addEventListener("blur", hideTip);
+    P.g.addEventListener("click", () => (tipFor === name ? hideTip() : showTip(name)));
+  });
+
+  // ---------------------------------------------------------------- demo tour
+  const DEMO_START = () => ({
+    project: "نظام طلبات الإجازات (مثال)",
+    stage: "analysis",
+    gates: { requirements: "pending", design: "pending", production: "pending" },
+    awaiting_approval: null, fix_cycle: 0,
+    progress: { executive: 30, analysis: 40, design: 0, development: 0, qa: 0, security: 0, devops: 0, docs: 0, hr: 0 },
+    agents: { "project-manager": { state: "done" }, "ceo": { state: "working", action: "delegate", target: "analysis-lead" }, "analysis-lead": { state: "working", action: "write" }, "systems-analyst": { state: "working", action: "write" }, "research-analyst": { state: "working", action: "web" } },
+    missions: [], events: [], updated_at: new Date().toISOString(),
+  });
+  const ev = (s, agent, text) => { s.events = [{ t: new Date().toISOString(), agent, text }, ...s.events].slice(0, 40); };
+  const set = (s, name, v) => { s.agents = { ...s.agents, [name]: v }; };
+  const DEMO_STEPS = [
+    s => { ev(s, "project-manager", "سلّم الخطة في plan.md"); ev(s, "analysis-lead", "يكتب قصص المستخدم ومعايير القبول"); },
+    s => { set(s, "research-analyst", { state: "done" }); ev(s, "research-analyst", "أنهى مقارنة البدائل الجاهزة"); },
+    s => { set(s, "systems-analyst", { state: "done" }); set(s, "analysis-lead", { state: "done" }); s.progress.analysis = 100; s.awaiting_approval = { title: "اعتماد المتطلبات", detail: "BRD و12 قصة مستخدم و3 أسئلة مفتوحة في docs/01-analysis/" }; set(s, "ceo", { state: "waiting", action: "review" }); ev(s, "ceo", "يطلب موافقتك على المتطلبات"); },
+    s => { s.gates.requirements = "approved"; s.awaiting_approval = null; s.stage = "design"; set(s, "ceo", { state: "working", action: "delegate", target: "design-lead" }); set(s, "design-lead", { state: "working", action: "write" }); ev(s, "ceo", "اجتزت بوابة المتطلبات؛ كلّف المعماري الرئيسي"); },
+    s => { ["database-designer", "api-designer", "ui-ux-designer"].forEach(n => set(s, n, { state: "working", action: "write" })); s.progress.design = 45; ev(s, "design-lead", "كلّف مصممي البيانات والواجهات بالتوازي"); },
+    s => { ["database-designer", "api-designer", "ui-ux-designer", "design-lead"].forEach(n => set(s, n, { state: "done" })); set(s, "cto", { state: "working", action: "review" }); s.progress.design = 90; ev(s, "cto", "يراجع سجلات القرار ADR"); },
+    s => { set(s, "cto", { state: "done" }); s.progress.design = 100; s.gates.design = "approved"; s.stage = "development"; set(s, "ceo", { state: "working", action: "delegate", target: "tech-lead" }); set(s, "tech-lead", { state: "working", action: "read" }); ev(s, "ceo", "اجتزت بوابة التصميم؛ بدأ التطوير"); },
+    s => { set(s, "backend-developer", { state: "working", action: "write" }); set(s, "frontend-developer", { state: "working", action: "write" }); set(s, "database-developer", { state: "working", action: "run" }); set(s, "qa-lead", { state: "working", action: "write" }); s.progress.development = 30; s.progress.qa = 15; ev(s, "tech-lead", "وزّع العمل على ثلاثة مطورين حسب الملفات"); },
+    s => { set(s, "database-developer", { state: "waiting", action: "run", note: "python manage.py migrate" }); ev(s, "database-developer", "ينتظر موافقتك لتشغيل أمر"); set(s, "ceo", { state: "working", action: "delegate", target: "hr-lead" }); set(s, "hr-lead", { state: "working", action: "write" }); s.missions = [{ employee: "code-reviewer", skill: "django-testing", steps: {} }]; s.progress.hr = 10; ev(s, "hr-lead", "فتح ملف إيفاد: مراجع الشيفرة ← django-testing"); },
+    s => { set(s, "skill-author", { state: "working", action: "web" }); set(s, "database-developer", { state: "working", action: "run" }); s.progress.development = 55; ev(s, "skill-author", "يبحث في توثيق pytest-django"); },
+    s => { set(s, "skill-author", { state: "done" }); set(s, "skill-assessor", { state: "working", action: "write" }); s.missions[0].steps = { author: true }; s.progress.hr = 40; set(s, "frontend-developer", { state: "done" }); ev(s, "skill-author", "سلّم المنهج .claude/skills/django-testing"); },
+    s => { set(s, "skill-assessor", { state: "done" }); s.missions[0].steps = { author: true, assessor: true }; s.progress.hr = 60; s.progress.development = 80; set(s, "backend-developer", { state: "working", action: "run" }); ev(s, "skill-assessor", "صمم مهمة الاختبار العملية"); },
+  ];
+  let demoTimer = null, demoState = null, demoI = 0;
+  function startDemo() {
+    stopDemo();
+    demoState = DEMO_START(); demoI = 0;
+    render(demoState);
+    demoTimer = setInterval(() => {
+      if (demoI >= DEMO_STEPS.length) { demoState = DEMO_START(); demoI = 0; }
+      else DEMO_STEPS[demoI++](demoState);
+      demoState.updated_at = new Date().toISOString();
+      render(demoState);
+    }, 2600);
+  }
+  function stopDemo() { if (demoTimer) clearInterval(demoTimer); demoTimer = null; }
+
+  // ---------------------------------------------------------------- live store
+  let mode = "demo", live = null, liveAvailable = false;
+  const bLive = $("m-live"), bDemo = $("m-demo");
+  function setMode(m) {
+    mode = m;
+    bLive.setAttribute("aria-pressed", m === "live");
+    bDemo.setAttribute("aria-pressed", m === "demo");
+    if (m === "demo") { startDemo(); $("foot").textContent = "جولة تجريبية بأحداث مكتوبة مسبقاً؛ الأسماء والأرقام أمثلة."; }
+    else { stopDemo(); render(live || {}); $("foot").innerHTML = "يعرض حالة الجلسة كما يكتبها المدير التنفيذي في المستند <code>office/live</code>."; }
+  }
+  bLive.addEventListener("click", () => liveAvailable && setMode("live"));
+  bDemo.addEventListener("click", () => setMode("demo"));
+  setMode("demo");
+
+  (async () => {
+    const db = await (window.claude?.use?.("db") ?? Promise.resolve(null));
+    if (!db) { bLive.title = "المتجر غير متاح في هذا العرض"; return; }
+    let first = true;
+    db.doc("office/live").onSnapshot(snap => {
+      if (!snap.exists) { bLive.title = "لم تكتب الجلسة أي حالة بعد"; return; }
+      live = snap.data(); liveAvailable = true;
+      bLive.disabled = false; bLive.title = "";
+      $("pulse").classList.add("live");
+      if (first) { first = false; setMode("live"); }
+      else if (mode === "live") render(live);
+    }, () => { $("pulse").classList.remove("live"); });
+  })();
+})();
+</script>

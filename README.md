@@ -12,7 +12,7 @@
    ```
    الإعداد `"agent": "ceo"` يجعل كل جلسة تبدأ بالمدير التنفيذي (أو صراحةً: `claude --agent ceo`). عُد إليها لاحقاً بـ `claude --continue`.
 3. اكتب طلبك، مثلاً: «نظام لإدارة طلبات الإجازات مع موافقة المدير المباشر».
-4. (اختياري) شغّل [المكتب الحي](live-office/README.md) لترى الموظفين يعملون.
+4. تابع الموظفين من [المكتب الحي](https://claude.ai/artifact/DQ4D2J3jXuJLAkkTF6B9SZ) على claude.ai (التفاصيل في [office/README.md](office/README.md)).
 
 > عند إنشاء مجلد `agents` أو `skills` لأول مرة أثناء جلسة مفتوحة، أعد تشغيلها أو نفّذ `/reload-skills`.
 
@@ -20,7 +20,7 @@
 ```
 CLAUDE.md               ← دستور الشركة
 .claude/
-  settings.json         ← المدير التنفيذي، العمق 2، فرق الوكلاء معطّلة، حجب .env، خطافات المكتب الحي
+  settings.json         ← المدير التنفيذي، العمق 2، فرق الوكلاء معطّلة، حجب .env
   agents/               ← 31 موظفاً، مجلد لكل قسم
   skills/               ← مناهج الإيفاد (django-testing)
   agent-memory/         ← خبرة الموظفين المتراكمة (memory: project)
@@ -29,8 +29,8 @@ docs/
   01-analysis/  02-design/  03-qa/  04-security/  05-release/
   hr/                   ← الإيفاد، سجل التدريب، دليل الموظفين
   standards/            ← معايير الشيفرة
-live-office/            ← المكتب الحي (Django Channels + React)
-scripts/gen_agents.py   ← يولّد ملفات الموظفين وقائمة المكتب الحي
+office/                 ← مصدر صفحة المكتب الحي ومخطط حالتها
+scripts/gen_agents.py   ← يولّد ملفات الموظفين
 ```
 
 ## الأقسام
